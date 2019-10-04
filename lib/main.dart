@@ -1,5 +1,6 @@
 import 'package:day_4_movies_assignment/movies.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:convert';
 
 String moviesList;
@@ -33,10 +34,9 @@ class _MoviesPageState extends State<MoviesPage> {
 
   void display() {
     setState(() {
-      url = poster[index++];
-      index = index % (poster.length) ;
 
-    });
+
+    },);
   }
 
   @override
@@ -54,15 +54,27 @@ class _MoviesPageState extends State<MoviesPage> {
       ),
       body: Center(
         child: Container(
+          color: Colors.yellow,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Image(image: NetworkImage(url)),
-              RaisedButton(
-                child: Text('Next Movie'),
-                color: Colors.yellow,
-                onPressed: display,
-              ),
+              CarouselSlider(
+                height: 400.0,
+                items: poster.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child:( Image(image: NetworkImage(i),
+                            fit: BoxFit.cover,
+                          )
+                      ),
+                      );
+                    },
+                  );
+                }).toList(),
+              )
             ],
           ),
         ),
